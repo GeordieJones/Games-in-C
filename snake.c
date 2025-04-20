@@ -135,6 +135,16 @@ while (!quit) {
         case 4: y += speed; break; // down
     }
 
+    int bodyLength = count * (squareWidth / speed);
+    bool bodycheck = true;
+
+    for (int i = 1; i < bodyLength; i++) {  // start at 1 to skip head
+        int index = (c - i - 1 + MAX_BODY_LENGTH) % MAX_BODY_LENGTH;
+        if (x == places[index].x && y == places[index].y) {
+            bodycheck = false;
+            break;
+        }
+    }
 
     if(freemode){
         if (x >= WIDTH){
@@ -176,6 +186,14 @@ while (!quit) {
             SDL_Delay(1000);
         }
         if (y < 0) {
+            x = STARTX;
+            y = STARTY;
+            count = 0;
+            direction = 1;
+            pendingDirection = 1;
+            SDL_Delay(1000);
+        }
+        if(!bodycheck){
             x = STARTX;
             y = STARTY;
             count = 0;
@@ -237,7 +255,7 @@ while (!quit) {
     places[c % MAX_BODY_LENGTH].y = y;
     c++;
 
-    int bodyLength = count * (squareWidth / speed);
+
     for(int i = 0; i< bodyLength; i++){
         int index = (c - i - 1 + MAX_BODY_LENGTH) % MAX_BODY_LENGTH;
         SDL_Rect body = {places[index].x, places[index].y, squareWidth, squareHeight};
