@@ -21,7 +21,8 @@ Run:
 #define WIDTH 600
 #define HEIGHT 600
 #define MAX_BODY_LENGTH 1000
-
+#define STARTX 180
+#define STARTY 66
 
 int squareHeight = HEIGHT / 9;
 int squareWidth = WIDTH / 10;
@@ -66,8 +67,8 @@ int main(){
     }
 int speed = 2;
 int direction = 1;
-int x = 180;
-int y = 66;
+int x = STARTX;
+int y = STARTY;
 int pendingDirection = 1;
 int count = 0;
 int c = 0;
