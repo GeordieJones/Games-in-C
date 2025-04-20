@@ -160,7 +160,7 @@ int main (){
         bally += (highchange * ballydirection);
 
         if(((ballx + 30) >= WIDTH || (ballx-30) <= 0)){
-            if((ballx + 30) >= WIDTH){score2++;}
+            if((ballx + 30) >= WIDTH){score1++;}
             if((ballx-30) <= 0){score2++;}
             ballx = HIGHT/2;
             bally = WIDTH/2;
