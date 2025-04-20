@@ -40,14 +40,18 @@ int main(){
         return 1;
     }
 
-    int speed = 15;
+    int speed = 1;
     int direct = 1;
     int x = 180;
     int y = 66;
+    int pdirect;
 
     SDL_Event event;
     bool quit = false;
     while(!quit){
+        bool xequal = (x%squareWidth == 0 );
+        bool yequal = (y%squareHeight == 0 );
+
         while(SDL_PollEvent(&event)){
             if(event.type == SDL_QUIT){
                 quit = true;
@@ -62,15 +66,19 @@ int main(){
                     switch (event.key.keysym.sym)
                     {
                     case SDLK_UP:
+                        pdirect = direct;
                         direct = 2;
                         break;
                     case SDLK_LEFT:
+                        pdirect = direct;
                         direct = 3;
                         break;
                     case SDLK_DOWN:
+                        pdirect = direct;
                         direct = 4;
                         break;
                     case SDLK_RIGHT:
+                        pdirect = direct;
                         direct = 1;
                         break;
                     default:
@@ -78,6 +86,46 @@ int main(){
                     }
                 }
             }
+        }
+
+        if(pdirect != direct){
+            switch (direct)
+                    {
+                    case 1:
+                        if(yequal){
+                            x += speed;
+                            break;
+                        }else{
+                            direct = pdirect;
+                        }
+                        break;
+                    case 2:
+                        if(xequal){
+                            y -= speed;
+                            break;
+                        }else{
+                            direct = pdirect;
+                        }
+                        break;
+                    case 3:
+                        if(yequal){
+                            x -= speed;
+                            break;
+                        }else{
+                            direct = pdirect;
+                        }
+                        break;
+                    case 4:
+                        if(xequal){
+                            y += speed;
+                            break;
+                        }else{
+                            direct = pdirect;
+                        }
+                        break;
+                    default:
+                        break;
+                    }
         }
         switch (direct)
                     {
@@ -120,9 +168,10 @@ int main(){
                 SDL_RenderDrawRect(renderer, &board[c][r]);
             }
         }
+        
 
         SDL_RenderPresent(renderer);
-        SDL_Delay(50);
+        SDL_Delay(5);
     }
 
 
