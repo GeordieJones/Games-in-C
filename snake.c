@@ -26,6 +26,24 @@ int squareWidth = WIDTH / 10;
 
 SDL_Rect board [10][9];
 
+struct Circle{
+    double x;
+    double y;
+    double r;
+};
+
+void FillCircle(SDL_Renderer* renderer, struct Circle circle){
+    double radius = pow(circle.r, 2);
+    for (double x = circle.x - circle.r; x <= circle.x + circle.r; x++){
+        for(double y = circle.y - circle.r; y <= circle.y + circle.r; y++){
+            double dist = pow(x-circle.x, 2) + pow(y-circle.y, 2);
+            if(dist <= radius){
+                SDL_RenderDrawPoint(renderer, (int)x, (int)y);
+            }
+        }
+    }
+}
+
 
 int main(){
     SDL_Init(SDL_INIT_VIDEO);
@@ -49,6 +67,9 @@ SDL_Event event;
 bool quit = false;
 
 while (!quit) {
+    srand(time(NULL));
+    int randy = ((rand() % 9));
+    int randx = ((rand() % 10));
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT) {
             quit = true;
@@ -100,6 +121,8 @@ while (!quit) {
     SDL_RenderFillRect(renderer, &head);
 
 
+    struct Circle apple1 = {(randx * squareWidth) + 30, (randy * squareHeight) + 30,30};
+
     for (int r = 0; r < HEIGHT / squareHeight; r++) {
         for (int c = 0; c < WIDTH / squareWidth; c++) {
             board[c][r].x = c * squareWidth;
@@ -109,6 +132,7 @@ while (!quit) {
             SDL_RenderDrawRect(renderer, &board[c][r]);
         }
     }
+    FillCircle(renderer, apple1);
 
     SDL_RenderPresent(renderer);
     SDL_Delay(10);
