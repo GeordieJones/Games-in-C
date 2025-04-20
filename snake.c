@@ -20,11 +20,18 @@ Run:
 
 #define WIDTH 600
 #define HEIGHT 600
+#define MAX_BODY_LENGTH 1000
+
 
 int squareHeight = HEIGHT / 9;
 int squareWidth = WIDTH / 10;
 
 SDL_Rect board [10][9];
+
+struct loc{
+    int x;
+    int y;
+};
 
 struct Circle{
     double x;
@@ -63,9 +70,12 @@ int x = 180;
 int y = 66;
 int pendingDirection = 1;
 int count = 0;
+int c = 0;
 srand(time(NULL));
 int randy = ((rand() % 9));
 int randx = ((rand() % 10));
+struct loc places[MAX_BODY_LENGTH];
+
 
 SDL_Event event;
 bool quit = false;
@@ -130,7 +140,7 @@ while (!quit) {
 
 
     struct Circle apple1 = {(randx * squareWidth) + 30, (randy * squareHeight) + 30,30};
-
+    
     for (int r = 0; r < HEIGHT / squareHeight; r++) {
         for (int c = 0; c < WIDTH / squareWidth; c++) {
             board[c][r].x = c * squareWidth;
@@ -141,6 +151,18 @@ while (!quit) {
         }
     }
     FillCircle(renderer, apple1);
+
+    places[c % MAX_BODY_LENGTH].x = x;
+    places[c % MAX_BODY_LENGTH].y = y;
+    c++;
+
+    int bodyLength = count * (squareWidth / speed);
+    for(int i = 0; i< bodyLength; i++){
+        int index = (c - i - 1 + MAX_BODY_LENGTH) % MAX_BODY_LENGTH;
+        SDL_Rect body = {places[index].x, places[index].y, squareWidth, squareHeight};
+        SDL_RenderFillRect(renderer, &body);
+    }
+
 
     SDL_RenderPresent(renderer);
     SDL_Delay(10);
