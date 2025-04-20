@@ -82,13 +82,12 @@ int pendingDirection = 1;
 int count = 0;
 int c = 0;
 srand(time(NULL));
-int randy = ((rand() % 9));
-int randx = ((rand() % 10));
 struct loc places[MAX_BODY_LENGTH];
 struct Circle a1 = apple(30);
 struct Circle a2 = apple(30);
 struct Circle a3 = apple(30);
 struct Circle a4 = apple(30);
+struct Circle a5 = apple(30);
 
 
 SDL_Event event;
@@ -210,27 +209,23 @@ while (!quit) {
     SDL_Rect head = {x, y, squareWidth, squareHeight};
     SDL_RenderFillRect(renderer, &head);
 
-    bool randsCheck = ((head.x == (randx * squareWidth)) && (head.y == (randy * squareHeight)));
+    bool a5check = ((head.x+30 == a5.x) && (head.y+30 == a5.y));
     bool a1check = ((head.x+30 == a1.x) && (head.y+30 == a1.y));
     bool a2check = ((head.x+30 == a2.x) && (head.y+30 == a2.y));
     bool a3check = ((head.x+30 == a3.x) && (head.y+30 == a3.y));
     bool a4check = ((head.x+30 == a4.x) && (head.y+30 == a4.y));
 
-    if(randsCheck ||a1check ||a2check||a3check||a4check){
+    if(a5check ||a1check ||a2check||a3check||a4check){
         count ++;
-        if(randsCheck){
-        randx = ((rand() % 10));
-        randy = ((rand() % 9));
-        }
         if(a1check) a1 = apple(30);
         if(a2check) a2 = apple(30);
         if(a3check) a3 = apple(30);
         if(a4check) a4 = apple(30);
-
+        if(a5check) a5 = apple(30);
     }
 
 
-    struct Circle apple1 = {(randx * squareWidth) + 30, (randy * squareHeight) + 30,30};
+
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     for (int r = 0; r < HEIGHT / squareHeight; r++) {
         for (int c = 0; c < WIDTH / squareWidth; c++) {
@@ -243,7 +238,7 @@ while (!quit) {
     }
 
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-    FillCircle(renderer, apple1);
+    FillCircle(renderer, a5);
     FillCircle(renderer, a1);
     FillCircle(renderer, a2);
     FillCircle(renderer, a3);
