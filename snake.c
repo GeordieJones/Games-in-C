@@ -62,14 +62,16 @@ int direction = 1;
 int x = 180;
 int y = 66;
 int pendingDirection = 1;
+int count = 0;
+srand(time(NULL));
+int randy = ((rand() % 9));
+int randx = ((rand() % 10));
 
 SDL_Event event;
 bool quit = false;
 
 while (!quit) {
-    srand(time(NULL));
-    int randy = ((rand() % 9));
-    int randx = ((rand() % 10));
+    
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT) {
             quit = true;
@@ -119,6 +121,12 @@ while (!quit) {
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     SDL_Rect head = {x, y, squareWidth, squareHeight};
     SDL_RenderFillRect(renderer, &head);
+
+    if((head.x == (randx * squareWidth)) && (head.y == (randy * squareHeight))){
+        count ++;
+        randx = ((rand() % 10));
+        randy = ((rand() % 9));
+    }
 
 
     struct Circle apple1 = {(randx * squareWidth) + 30, (randy * squareHeight) + 30,30};
