@@ -23,6 +23,7 @@ Run:
 #define MAX_BODY_LENGTH 5000
 #define STARTX 180
 #define STARTY 66
+#define freemode false
 
 int squareHeight = HEIGHT / 9;
 int squareWidth = WIDTH / 10;
@@ -58,6 +59,7 @@ struct Circle apple(int size ){
     struct Circle apple = {(randx * squareWidth) + 30, (randy * squareHeight) + 30,size};
     return apple;
 }
+
 
 
 int main(){
@@ -118,6 +120,8 @@ while (!quit) {
         }
     }
 
+    
+
     bool alignedToGrid = (x % squareWidth == 0) && (y % squareHeight == 0);
     if (alignedToGrid) {
         direction = pendingDirection;
@@ -132,10 +136,54 @@ while (!quit) {
     }
 
 
-    if (x >= WIDTH) x = 0;
-    if (x < 0) x = WIDTH - squareWidth;
-    if (y >= HEIGHT) y = 0;
-    if (y < 0) y = HEIGHT - squareHeight;
+    if(freemode){
+        if (x >= WIDTH){
+            x = 0;
+        }
+        if (x < 0){
+            x = WIDTH;
+        }
+        if (y >= HEIGHT) {
+            y = 0;
+            }
+        if (y < 0) {
+            y = HEIGHT - squareHeight;
+        }
+    }
+    else{
+        if (x >= WIDTH){
+            x = STARTX;
+            y = STARTY;
+            count = 0;
+            direction = 1;
+            pendingDirection = 1;
+            SDL_Delay(1000);
+        }
+        if (x < 0){
+            x = STARTX;
+            y = STARTY;
+            count = 0;
+            direction = 1;
+            pendingDirection = 1;
+            SDL_Delay(1000);
+        }
+        if (y >= HEIGHT) {
+            x = STARTX;
+            y = STARTY;
+            count = 0;
+            direction = 1;
+            pendingDirection = 1;
+            SDL_Delay(1000);
+        }
+        if (y < 0) {
+            x = STARTX;
+            y = STARTY;
+            count = 0;
+            direction = 1;
+            pendingDirection = 1;
+            SDL_Delay(1000);
+        }
+    }
 
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
