@@ -39,140 +39,80 @@ int main(){
         SDL_Quit();
         return 1;
     }
+int speed = 2;
+int direction = 1;
+int x = 180;
+int y = 66;
+int pendingDirection = 1;
 
-    int speed = 1;
-    int direct = 1;
-    int x = 180;
-    int y = 66;
-    int pdirect;
+SDL_Event event;
+bool quit = false;
 
-    SDL_Event event;
-    bool quit = false;
-    while(!quit){
-        bool xequal = (x%squareWidth == 0 );
-        bool yequal = (y%squareHeight == 0 );
-
-        while(SDL_PollEvent(&event)){
-            if(event.type == SDL_QUIT){
-                quit = true;
-            } /*
-            Directions:
-                        2
-                    3       1
-                        4
-               */
-            if(event.type == SDL_KEYDOWN){
-                if(event.type == SDL_KEYDOWN){
-                    switch (event.key.keysym.sym)
-                    {
-                    case SDLK_UP:
-                        pdirect = direct;
-                        direct = 2;
-                        break;
-                    case SDLK_LEFT:
-                        pdirect = direct;
-                        direct = 3;
-                        break;
-                    case SDLK_DOWN:
-                        pdirect = direct;
-                        direct = 4;
-                        break;
-                    case SDLK_RIGHT:
-                        pdirect = direct;
-                        direct = 1;
-                        break;
-                    default:
-                        break;
-                    }
-                }
+while (!quit) {
+    while (SDL_PollEvent(&event)) {
+        if (event.type == SDL_QUIT) {
+            quit = true;
+        }
+        if (event.type == SDL_KEYDOWN) {
+            switch (event.key.keysym.sym) {
+                case SDLK_UP:
+                    if (direction != 4) pendingDirection = 2;
+                    break;
+                case SDLK_LEFT:
+                    if (direction != 1) pendingDirection = 3;
+                    break;
+                case SDLK_DOWN:
+                    if (direction != 2) pendingDirection = 4;
+                    break;
+                case SDLK_RIGHT:
+                    if (direction != 3) pendingDirection = 1;
+                    break;
+                default:
+                    break;
             }
         }
-
-        if(pdirect != direct){
-            switch (direct)
-                    {
-                    case 1:
-                        if(yequal){
-                            x += speed;
-                            break;
-                        }else{
-                            direct = pdirect;
-                        }
-                        break;
-                    case 2:
-                        if(xequal){
-                            y -= speed;
-                            break;
-                        }else{
-                            direct = pdirect;
-                        }
-                        break;
-                    case 3:
-                        if(yequal){
-                            x -= speed;
-                            break;
-                        }else{
-                            direct = pdirect;
-                        }
-                        break;
-                    case 4:
-                        if(xequal){
-                            y += speed;
-                            break;
-                        }else{
-                            direct = pdirect;
-                        }
-                        break;
-                    default:
-                        break;
-                    }
-        }
-        switch (direct)
-                    {
-                    case 1:
-                        x += speed;
-                        break;
-                    case 2:
-                        y -= speed;
-                        break;
-                    case 3:
-                        x -= speed;
-                        break;
-                    case 4:
-                        y += speed;
-                        break;
-                    default:
-                        break;
-                    }
-        
-        if(x > WIDTH && direct == 1){x = 0;}
-        if(x < 0 && direct == 3){x = WIDTH;}
-        if(y > HEIGHT && direct == 4){y = 0;}
-        if(y < 0 && direct == 2){y = HEIGHT;}
-
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-        SDL_RenderClear(renderer);
-        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-        SDL_Rect head= {x, y, squareWidth, squareHeight};
-        SDL_RenderFillRect(renderer, &head);
-
-        
-
-
-        for(int r = 0; r < HEIGHT / squareHeight; r++){
-            for(int c = 0; c < WIDTH / squareWidth; c++){
-                board[c][r].x = c * squareWidth;
-                board[c][r].y = r * squareHeight;
-                board[c][r].w = squareWidth;
-                board[c][r].h = squareHeight;
-                SDL_RenderDrawRect(renderer, &board[c][r]);
-            }
-        }
-        
-
-        SDL_RenderPresent(renderer);
-        SDL_Delay(5);
     }
+
+    bool alignedToGrid = (x % squareWidth == 0) && (y % squareHeight == 0);
+    if (alignedToGrid) {
+        direction = pendingDirection;
+    }
+
+    // Move based on current direction
+    switch (direction) {
+        case 1: x += speed; break; // right
+        case 2: y -= speed; break; // up
+        case 3: x -= speed; break; // left
+        case 4: y += speed; break; // down
+    }
+
+
+    if (x >= WIDTH) x = 0;
+    if (x < 0) x = WIDTH - squareWidth;
+    if (y >= HEIGHT) y = 0;
+    if (y < 0) y = HEIGHT - squareHeight;
+
+
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderClear(renderer);
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    SDL_Rect head = {x, y, squareWidth, squareHeight};
+    SDL_RenderFillRect(renderer, &head);
+
+
+    for (int r = 0; r < HEIGHT / squareHeight; r++) {
+        for (int c = 0; c < WIDTH / squareWidth; c++) {
+            board[c][r].x = c * squareWidth;
+            board[c][r].y = r * squareHeight;
+            board[c][r].w = squareWidth;
+            board[c][r].h = squareHeight;
+            SDL_RenderDrawRect(renderer, &board[c][r]);
+        }
+    }
+
+    SDL_RenderPresent(renderer);
+    SDL_Delay(10);
+}
 
 
 
