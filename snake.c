@@ -96,6 +96,11 @@ int main(){
                     default:
                         break;
                     }
+        
+        if(x > WIDTH && direct == 1){x = 0;}
+        if(x < 0 && direct == 3){x = WIDTH;}
+        if(y > HEIGHT && direct == 4){y = 0;}
+        if(y < 0 && direct == 2){y = HEIGHT;}
 
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
