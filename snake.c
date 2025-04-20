@@ -20,7 +20,7 @@ Run:
 
 #define WIDTH 600
 #define HEIGHT 600
-#define MAX_BODY_LENGTH 1000
+#define MAX_BODY_LENGTH 5000
 #define STARTX 180
 #define STARTY 66
 
@@ -52,6 +52,13 @@ void FillCircle(SDL_Renderer* renderer, struct Circle circle){
     }
 }
 
+struct Circle apple(int size ){
+    int randy = ((rand() % 9));
+    int randx = ((rand() % 10));
+    struct Circle apple = {(randx * squareWidth) + 30, (randy * squareHeight) + 30,size};
+    return apple;
+}
+
 
 int main(){
     SDL_Init(SDL_INIT_VIDEO);
@@ -76,6 +83,10 @@ srand(time(NULL));
 int randy = ((rand() % 9));
 int randx = ((rand() % 10));
 struct loc places[MAX_BODY_LENGTH];
+struct Circle a1 = apple(30);
+struct Circle a2 = apple(30);
+struct Circle a3 = apple(30);
+struct Circle a4 = apple(30);
 
 
 SDL_Event event;
@@ -129,19 +140,32 @@ while (!quit) {
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
     SDL_Rect head = {x, y, squareWidth, squareHeight};
     SDL_RenderFillRect(renderer, &head);
 
-    if((head.x == (randx * squareWidth)) && (head.y == (randy * squareHeight))){
+    bool randsCheck = ((head.x == (randx * squareWidth)) && (head.y == (randy * squareHeight)));
+    bool a1check = ((head.x+30 == a1.x) && (head.y+30 == a1.y));
+    bool a2check = ((head.x+30 == a2.x) && (head.y+30 == a2.y));
+    bool a3check = ((head.x+30 == a3.x) && (head.y+30 == a3.y));
+    bool a4check = ((head.x+30 == a4.x) && (head.y+30 == a4.y));
+
+    if(randsCheck ||a1check ||a2check||a3check||a4check){
         count ++;
+        if(randsCheck){
         randx = ((rand() % 10));
         randy = ((rand() % 9));
+        }
+        if(a1check) a1 = apple(30);
+        if(a2check) a2 = apple(30);
+        if(a3check) a3 = apple(30);
+        if(a4check) a4 = apple(30);
+
     }
 
 
     struct Circle apple1 = {(randx * squareWidth) + 30, (randy * squareHeight) + 30,30};
-    
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     for (int r = 0; r < HEIGHT / squareHeight; r++) {
         for (int c = 0; c < WIDTH / squareWidth; c++) {
             board[c][r].x = c * squareWidth;
@@ -151,7 +175,15 @@ while (!quit) {
             SDL_RenderDrawRect(renderer, &board[c][r]);
         }
     }
+
+    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
     FillCircle(renderer, apple1);
+    FillCircle(renderer, a1);
+    FillCircle(renderer, a2);
+    FillCircle(renderer, a3);
+    FillCircle(renderer, a4);
+
+    SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
 
     places[c % MAX_BODY_LENGTH].x = x;
     places[c % MAX_BODY_LENGTH].y = y;
