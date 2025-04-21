@@ -249,6 +249,7 @@ while (!quit) {
     places[c % MAX_BODY_LENGTH].x = x;
     places[c % MAX_BODY_LENGTH].y = y;
     c++;
+    
 
 
     for(int i = 0; i< bodyLength; i++){
@@ -256,6 +257,11 @@ while (!quit) {
         SDL_Rect body = {places[index].x, places[index].y, squareWidth, squareHeight};
         SDL_RenderFillRect(renderer, &body);
     }
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_Rect eye1 = {x + 10 , y +20, squareWidth / 5, squareHeight /5};
+    SDL_Rect eye2 = {x + 40 , y +20, squareWidth / 5, squareHeight /5};
+    SDL_RenderFillRect(renderer, &eye1);
+    SDL_RenderFillRect(renderer, &eye2);
 
 
     SDL_RenderPresent(renderer);
