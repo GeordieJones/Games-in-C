@@ -53,19 +53,33 @@ void FillCircle(SDL_Renderer* renderer, struct Circle circle){
     }
 }
 
-struct Circle apple(int size, SDL_Renderer* renderer, int bodyLength, int c, struct loc places[]){
-    int randy = ((rand() % 9));
-    int randx = ((rand() % 10));
-    for(int i = 0; i< bodyLength; i++){
-        int index = (c - i - 1 + MAX_BODY_LENGTH) % MAX_BODY_LENGTH;
-        if((randx * squareWidth) + 30 == places[index].x && (randy * squareHeight) + 30 == places[index].y){
-            return apple(size, renderer, bodyLength, c, places);
-            break;
+
+struct Circle apple(int size, SDL_Renderer* renderer, int bodyLength, int c, struct loc places[]) {
+    int randy, randx;
+    bool collision;
+
+    do {
+        collision = false;
+        randx = rand() % 10;
+        randy = rand() % 9;
+
+        int appleX = randx * squareWidth;
+        int appleY = randy * squareHeight;
+
+        for (int i = 0; i < bodyLength; i++) {
+            int index = (c - i - 1 + MAX_BODY_LENGTH) % MAX_BODY_LENGTH;
+
+            if (appleX == places[index].x && appleY == places[index].y) {
+                collision = true;
+                break;
+            }
         }
-    }
-    struct Circle apple = {(randx * squareWidth) + 30, (randy * squareHeight) + 30,size};
+    } while (collision);
+
+    struct Circle apple = {randx * squareWidth + 30, randy * squareHeight + 30, size};
     return apple;
 }
+
 
 struct Circle appleCreate(int size){
     int randy = ((rand() % 9));
@@ -110,6 +124,9 @@ bool quit = false;
 while (!quit) {
         int bodyLength = count * (squareWidth / speed);
         bool bodycheck = true;
+    if(count >= HEIGHT * WIDTH){
+        count = 0;
+    }
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT) {
             quit = true;
