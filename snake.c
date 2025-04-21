@@ -53,7 +53,21 @@ void FillCircle(SDL_Renderer* renderer, struct Circle circle){
     }
 }
 
-struct Circle apple(int size ){
+struct Circle apple(int size, SDL_Renderer* renderer, int bodyLength, int c, struct loc places[]){
+    int randy = ((rand() % 9));
+    int randx = ((rand() % 10));
+    for(int i = 0; i< bodyLength; i++){
+        int index = (c - i - 1 + MAX_BODY_LENGTH) % MAX_BODY_LENGTH;
+        if((randx * squareWidth) + 30 == places[index].x && (randy * squareHeight) + 30 == places[index].y){
+            return apple(size, renderer, bodyLength, c, places);
+            break;
+        }
+    }
+    struct Circle apple = {(randx * squareWidth) + 30, (randy * squareHeight) + 30,size};
+    return apple;
+}
+
+struct Circle appleCreate(int size){
     int randy = ((rand() % 9));
     int randx = ((rand() % 10));
     struct Circle apple = {(randx * squareWidth) + 30, (randy * squareHeight) + 30,size};
@@ -83,18 +97,19 @@ int count = 0;
 int c = 0;
 srand(time(NULL));
 struct loc places[MAX_BODY_LENGTH];
-struct Circle a1 = apple(30);
-struct Circle a2 = apple(30);
-struct Circle a3 = apple(30);
-struct Circle a4 = apple(30);
-struct Circle a5 = apple(30);
+struct Circle a1 = appleCreate(30);
+struct Circle a2 = appleCreate(30);
+struct Circle a3 = appleCreate(30);
+struct Circle a4 = appleCreate(30);
+struct Circle a5 = appleCreate(30);
 
 
 SDL_Event event;
 bool quit = false;
 
 while (!quit) {
-    
+        int bodyLength = count * (squareWidth / speed);
+        bool bodycheck = true;
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT) {
             quit = true;
@@ -134,8 +149,8 @@ while (!quit) {
         case 4: y += speed; break; // down
     }
 
-    int bodyLength = count * (squareWidth / speed);
-    bool bodycheck = true;
+    //int bodyLength = count * (squareWidth / speed);
+    //bool bodycheck = true;
 
     for (int i = 1; i < bodyLength; i++) {  // start at 1 to skip head
         int index = (c - i - 1 + MAX_BODY_LENGTH) % MAX_BODY_LENGTH;
@@ -208,6 +223,10 @@ while (!quit) {
     SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
     SDL_Rect head = {x, y, squareWidth, squareHeight};
     SDL_RenderFillRect(renderer, &head);
+        places[c % MAX_BODY_LENGTH].x = x;
+        places[c % MAX_BODY_LENGTH].y = y;
+        c++;
+
 
     bool a5check = ((head.x+30 == a5.x) && (head.y+30 == a5.y));
     bool a1check = ((head.x+30 == a1.x) && (head.y+30 == a1.y));
@@ -217,11 +236,11 @@ while (!quit) {
 
     if(a5check ||a1check ||a2check||a3check||a4check){
         count ++;
-        if(a1check) a1 = apple(30);
-        if(a2check) a2 = apple(30);
-        if(a3check) a3 = apple(30);
-        if(a4check) a4 = apple(30);
-        if(a5check) a5 = apple(30);
+        if(a1check) a1 = apple(30, renderer, bodyLength, c, places);
+        if(a2check) a2 = apple(30, renderer, bodyLength, c, places);
+        if(a3check) a3 = apple(30, renderer, bodyLength, c, places);
+        if(a4check) a4 = apple(30, renderer, bodyLength, c, places);
+        if(a5check) a5 = apple(30, renderer, bodyLength, c, places);
     }
 
 
@@ -246,9 +265,9 @@ while (!quit) {
 
     SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
 
-    places[c % MAX_BODY_LENGTH].x = x;
-    places[c % MAX_BODY_LENGTH].y = y;
-    c++;
+    //places[c % MAX_BODY_LENGTH].x = x;
+    //places[c % MAX_BODY_LENGTH].y = y;
+    //c++;
     
 
 
