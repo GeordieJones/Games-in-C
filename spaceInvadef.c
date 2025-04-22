@@ -35,17 +35,32 @@ int main(){
 
     SDL_Event event;
     bool quit = false;
+    int x = WIDTH /2;
+    int y = HEIGHT - 20;
+    int playerspeed = 20;
     while(!quit){
+
         while(SDL_PollEvent(&event)){
             if(event.type == SDL_QUIT){
                 quit = true;
             }
+            if (event.type == SDL_KEYDOWN) {
+                switch (event.key.keysym.sym) {
+                    case SDLK_RIGHT:
+                        x += playerspeed;
+                        break;
+                    case SDLK_LEFT:
+                        x-=playerspeed;
+                }
+            }
+
         }
         SDL_SetRenderDrawColor(renderer, 0,0,0, 255);
         SDL_RenderClear(renderer);
 
+        SDL_SetRenderDrawColor(renderer, 0,0,255, 255);
+        createcharacter(renderer, 0, 0, 255, x, HEIGHT - 20);
 
-        createcharacter(renderer, 0, 0, 255, WIDTH /2, HEIGHT - 20);
 
         SDL_RenderPresent(renderer);
         SDL_Delay(50);
