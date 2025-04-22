@@ -38,6 +38,9 @@ int main(){
     int x = WIDTH /2;
     int y = HEIGHT - 20;
     int playerspeed = 20;
+    bool t = false;
+    int shotspeed = 10;
+    SDL_Rect shot = {x + 37,y,5, 20};
     while(!quit){
 
         while(SDL_PollEvent(&event)){
@@ -50,7 +53,13 @@ int main(){
                         x += playerspeed;
                         break;
                     case SDLK_LEFT:
-                        x-=playerspeed;
+                        x -= playerspeed;
+                        break;
+                    case SDLK_UP:
+                        t= true;
+                        break;
+                    default:
+                        break;
                 }
             }
 
@@ -58,6 +67,14 @@ int main(){
         SDL_SetRenderDrawColor(renderer, 0,0,0, 255);
         SDL_RenderClear(renderer);
 
+        if(t){
+            shot.y -= shotspeed;
+        }else{
+            shot.x = x +37;
+        }
+
+        SDL_SetRenderDrawColor(renderer, 255,0,0, 255);
+        SDL_RenderFillRect(renderer, &shot);
         SDL_SetRenderDrawColor(renderer, 0,0,255, 255);
         createcharacter(renderer, 0, 0, 255, x, HEIGHT - 20);
 
