@@ -9,6 +9,16 @@
 #define WIDTH 800
 #define HEIGHT 600
 
+void createcharacter(SDL_Renderer* renderer, int r, int g, int b, int x, int y){
+    SDL_SetRenderDrawColor(renderer, r, g, b, 255);
+    SDL_Rect boxbod = {x,y,80, 20};
+    SDL_Rect botgun = {x+20,y-20, 40, 20};
+    SDL_Rect gun = {x+35,y-40, 10, 30};
+    SDL_RenderFillRect(renderer, &boxbod);
+    SDL_RenderFillRect(renderer, &botgun);
+    SDL_RenderFillRect(renderer, &gun);
+}
+
 int main(){
     SDL_Init(SDL_INIT_VIDEO);
     SDL_Window* window = SDL_CreateWindow("Space Invader", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, SDL_WINDOW_SHOWN);
@@ -33,9 +43,9 @@ int main(){
         }
         SDL_SetRenderDrawColor(renderer, 0,0,0, 255);
         SDL_RenderClear(renderer);
-        SDL_SetRenderDrawColor(renderer, 0,0,255, 255);
-        SDL_Rect box = {200,200,200, 200};
-        SDL_RenderFillRect(renderer, &box);
+
+
+        createcharacter(renderer, 0, 0, 255, WIDTH /2, HEIGHT - 20);
 
         SDL_RenderPresent(renderer);
         SDL_Delay(50);
