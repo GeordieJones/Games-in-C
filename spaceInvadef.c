@@ -22,7 +22,6 @@ struct crab{
     int alive;
 };
 
-struct crab crabs [crabrow][3];
 
 void createcharacter(SDL_Renderer* renderer, int r, int g, int b, int x, int y){
     SDL_SetRenderDrawColor(renderer, r, g, b, 255);
@@ -61,11 +60,17 @@ void crabeye(SDL_Renderer* renderer, int x, int y){
     SDL_RenderFillRect(renderer, &eye2);
 }
 
-void printCrab(SDL_Renderer* renderer, int x, int y){
-    SDL_SetRenderDrawColor(renderer, 0,0,255, 255);
-    createcrabbody(renderer, 0, 255, 0, x, y);
-    SDL_SetRenderDrawColor(renderer, 0,0,255, 255);
-    crabeye(renderer, x,y);
+void printCrab(SDL_Renderer* renderer, struct crab crabs [crabrow][3]){
+    for(int i = 0; i < 3; i++){
+        for(int h = 0; h < crabrow; h++){
+            if(crabs[h][i].alive == 1){
+                SDL_SetRenderDrawColor(renderer, 0,0,255, 255);
+                createcrabbody(renderer, 0, 255, 0, crabs[h][i].x, crabs[h][i].y);
+                SDL_SetRenderDrawColor(renderer, 0,0,255, 255);
+                crabeye(renderer, crabs[h][i].x,crabs[h][i].y);
+            }
+        }
+    }
 }
 
 int main(){
@@ -80,8 +85,16 @@ int main(){
         SDL_Quit();
         return 1;
     }
-
-
+    struct crab crabs [crabrow][3];
+    for(int i = 0; i < 3; i++){
+        for(int h = 0; h < crabrow; h++){
+            crabs[h][i].x = h*80;
+            crabs[h][i].y = (i * 60)+40;
+            crabs[h][i].width = 60;
+            crabs[h][i].height = 40;
+            crabs[h][i].alive = 1;
+        }
+    }
     SDL_Event event;
     bool quit = false;
     int x = WIDTH /2;
@@ -146,6 +159,20 @@ int main(){
         }
 
         for(int i = 0; i< bullets; i++){
+
+            for(int t = 0; t < 3; t++){
+                for(int h = 0; h < crabrow; h++){
+                    if(crabs[h][t].y - 40 == shots[i].y){
+                        if((shots[i].x >= crabs[h][t].x) && (shots[i].x <= crabs[h][t].x+60) && (crabs[h][t].alive == 1)){
+                            shots[i].y = y;
+                            shots[i].x = x;
+                            num--;
+                            crabs[h][t].alive = 0;
+                        }
+                    }
+                }
+            }
+
             if(shots[i].y <= -20){
                 shots[i].y = y;
                 shots[i].x = x;
@@ -161,11 +188,11 @@ int main(){
         SDL_SetRenderDrawColor(renderer, 0,0,255, 255);
         createcharacter(renderer, 0, 0, 255, x, HEIGHT - 20);
 
-        for(int i = 0; i < WIDTH; i+=80){
-            for(int h = 40; h < 220; h+= 60){
-                printCrab(renderer, i , h);
-            }
-        }
+        //for(int i = 0; i < WIDTH; i+=80){
+          //  for(int h = 40; h < 220; h+= 60){
+                printCrab(renderer, crabs);
+            //}
+        //}
 
 
         SDL_RenderPresent(renderer);
