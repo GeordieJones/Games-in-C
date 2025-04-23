@@ -24,6 +24,7 @@ void createcharacter(SDL_Renderer* renderer, int r, int g, int b, int x, int y){
     SDL_RenderFillRect(renderer, &gun);
 }
 
+//crab is 60 by 40
 void createcrabbody(SDL_Renderer* renderer,int r, int g, int b, int x, int y){
     SDL_SetRenderDrawColor(renderer, r, g, b, 255);
     SDL_Rect leftclaw = {x,y,5, 20};
@@ -142,10 +143,15 @@ int main(){
         }
         SDL_SetRenderDrawColor(renderer, 0,0,255, 255);
         createcharacter(renderer, 0, 0, 255, x, HEIGHT - 20);
-        createcrabbody(renderer, 0, 255, 0, 200, 200);
 
-        SDL_SetRenderDrawColor(renderer, 0,0,255, 255);
-        crabeye(renderer, 200,200);
+        for(int i = 0; i < WIDTH; i+=80){
+            for(int h = 40; h < 220; h+= 60){
+                SDL_SetRenderDrawColor(renderer, 0,0,255, 255);
+                createcrabbody(renderer, 0, 255, 0, i, h);
+                SDL_SetRenderDrawColor(renderer, 0,0,255, 255);
+                crabeye(renderer, i,h);
+            }
+        }
 
 
         SDL_RenderPresent(renderer);
