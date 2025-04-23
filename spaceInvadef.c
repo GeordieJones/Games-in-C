@@ -70,6 +70,10 @@ int main(){
                         break;
                     case SDLK_UP:
                         t= true;
+                        if(count == 8){
+                            count = 1;
+                            break;
+                        }
                         count ++;
                         num++;
                         break;
@@ -85,24 +89,26 @@ int main(){
         for(int i = 0; i< bullets; i++){
             if((shots[i].y < y) && (shots[i].y > -20)){
                 shots[i].y -= shotspeed;
-                printf("shots at [%d] moved up\n", i);
+            }else{
+                if(shots[i].y == y){
+                    shots[i].x = x +37;
+                }
+                
             }
         }
 
         if(t){
             shots[count-1].y -= shotspeed+20;
-        }else{
-            for(int i = count; i< bullets; i++){
-                shots[i].x = x +37;
-            }
         }
 
         for(int i = 0; i< bullets; i++){
             if(shots[i].y <= -20){
                 shots[i].y = y;
+                shots[i].x = x;
                 num --;
             }
         }
+
 
         SDL_SetRenderDrawColor(renderer, 255,0,0, 255);
         for(int i = 0; i< bullets; i++){
