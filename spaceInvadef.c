@@ -66,14 +66,15 @@ void crabeye(SDL_Renderer* renderer, int x, int y){
     SDL_RenderFillRect(renderer, &eye2);
 }
 
-void printCrab(SDL_Renderer* renderer, struct crab crabs [crabrow][3]){
+void printCrab(SDL_Renderer* renderer, struct crab crabs [crabrow][3], int x){
+    int yAdd = 0;
     for(int i = 0; i < 3; i++){
         for(int h = 0; h < crabrow; h++){
             if(crabs[h][i].alive == 1){
                 SDL_SetRenderDrawColor(renderer, 0,0,255, 255);
-                createcrabbody(renderer, 0, 255, 0, crabs[h][i].x, crabs[h][i].y);
+                createcrabbody(renderer, 0, 255, 0, crabs[h][i].x + x, crabs[h][i].y + yAdd);
                 SDL_SetRenderDrawColor(renderer, 0,0,255, 255);
-                crabeye(renderer, crabs[h][i].x,crabs[h][i].y);
+                crabeye(renderer, crabs[h][i].x + x,crabs[h][i].y + yAdd);
             }
         }
     }
@@ -109,6 +110,11 @@ int main(){
     int shotspeed = 10;
     int count = 0;
     int num = 0;
+    int intAdder= 2;
+    int heightAdd = 0;
+    int trav = 0;
+    int tray = 0;
+
         for(int i = 0; i<bullets; i++){
             shots[i].h = 20;
             shots[i].w = 5;
@@ -197,10 +203,30 @@ int main(){
         buildwall(renderer, 0,0,255,330, 450);
         buildwall(renderer, 0,0,255,600, 450);
 
+        printCrab(renderer, crabs, 0);
 
-        printCrab(renderer, crabs);
+        if(trav == 60){
+            intAdder *= -1;
+            trav = -30;
+            tray++;
+        }
+
+        if(tray == 4){
+            tray = 0;
+            heightAdd += 60;
+        }
+        
 
 
+        for(int z = 0; z < 3; z++){
+            for(int a = 0; a < crabrow; a++){
+                crabs[a][z].x += intAdder;
+                crabs[a][z].y += heightAdd;
+            }
+        }
+        heightAdd = 0;
+
+        trav++;
 
         SDL_RenderPresent(renderer);
         SDL_Delay(50);
