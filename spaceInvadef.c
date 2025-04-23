@@ -24,6 +24,32 @@ void createcharacter(SDL_Renderer* renderer, int r, int g, int b, int x, int y){
     SDL_RenderFillRect(renderer, &gun);
 }
 
+void createcrabbody(SDL_Renderer* renderer,int r, int g, int b, int x, int y){
+    SDL_SetRenderDrawColor(renderer, r, g, b, 255);
+    SDL_Rect leftclaw = {x,y,5, 20};
+    SDL_Rect leftjoint = {x+5,y-5,5, 15};
+    SDL_Rect leftbod = {x+10,y-10,40, 30};
+    SDL_Rect rightclaw = {x + 55,y,5, 20};
+    SDL_Rect rightjoint = {x+50,y-5,5, 15};
+    SDL_Rect leftattena = {x + 15,y-20, 5, 20};
+    SDL_Rect rightattena = {x + 40,y-20, 5, 20};
+    SDL_RenderFillRect(renderer, &leftclaw);
+    SDL_RenderFillRect(renderer, &leftjoint);
+    SDL_RenderFillRect(renderer, &leftbod);
+    SDL_RenderFillRect(renderer, &rightclaw);
+    SDL_RenderFillRect(renderer, &rightjoint);
+    SDL_RenderFillRect(renderer, &rightattena);
+    SDL_RenderFillRect(renderer, &leftattena);
+}
+
+void crabeye(SDL_Renderer* renderer, int x, int y){
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_Rect eye1 = {x + 20,y-2, 5, 10};
+    SDL_Rect eye2 = {x + 35,y-2, 5, 10};
+    SDL_RenderFillRect(renderer, &eye1);
+    SDL_RenderFillRect(renderer, &eye2);
+}
+
 int main(){
     SDL_Init(SDL_INIT_VIDEO);
     SDL_Window* window = SDL_CreateWindow("Space Invader", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, SDL_WINDOW_SHOWN);
@@ -116,6 +142,10 @@ int main(){
         }
         SDL_SetRenderDrawColor(renderer, 0,0,255, 255);
         createcharacter(renderer, 0, 0, 255, x, HEIGHT - 20);
+        createcrabbody(renderer, 0, 255, 0, 200, 200);
+
+        SDL_SetRenderDrawColor(renderer, 0,0,255, 255);
+        crabeye(renderer, 200,200);
 
 
         SDL_RenderPresent(renderer);
