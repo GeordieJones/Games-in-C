@@ -9,10 +9,20 @@
 #define WIDTH 800
 #define HEIGHT 600
 #define bullets 8
+#define crabrow WIDTH / 80
 
 SDL_Rect shots [bullets];
 
 
+struct crab{
+    int x;
+    int y;
+    int width;
+    int height;
+    int alive;
+};
+
+struct crab crabs [crabrow][3];
 
 void createcharacter(SDL_Renderer* renderer, int r, int g, int b, int x, int y){
     SDL_SetRenderDrawColor(renderer, r, g, b, 255);
@@ -49,6 +59,13 @@ void crabeye(SDL_Renderer* renderer, int x, int y){
     SDL_Rect eye2 = {x + 35,y-2, 5, 10};
     SDL_RenderFillRect(renderer, &eye1);
     SDL_RenderFillRect(renderer, &eye2);
+}
+
+void printCrab(SDL_Renderer* renderer, int x, int y){
+    SDL_SetRenderDrawColor(renderer, 0,0,255, 255);
+    createcrabbody(renderer, 0, 255, 0, x, y);
+    SDL_SetRenderDrawColor(renderer, 0,0,255, 255);
+    crabeye(renderer, x,y);
 }
 
 int main(){
@@ -146,10 +163,7 @@ int main(){
 
         for(int i = 0; i < WIDTH; i+=80){
             for(int h = 40; h < 220; h+= 60){
-                SDL_SetRenderDrawColor(renderer, 0,0,255, 255);
-                createcrabbody(renderer, 0, 255, 0, i, h);
-                SDL_SetRenderDrawColor(renderer, 0,0,255, 255);
-                crabeye(renderer, i,h);
+                printCrab(renderer, i , h);
             }
         }
 
