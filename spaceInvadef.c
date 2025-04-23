@@ -8,6 +8,11 @@
 
 #define WIDTH 800
 #define HEIGHT 600
+#define bullets 8
+
+SDL_Rect shots [bullets];
+
+
 
 void createcharacter(SDL_Renderer* renderer, int r, int g, int b, int x, int y){
     SDL_SetRenderDrawColor(renderer, r, g, b, 255);
@@ -38,10 +43,18 @@ int main(){
     int x = WIDTH /2;
     int y = HEIGHT - 20;
     int playerspeed = 20;
-    bool t = false;
     int shotspeed = 10;
-    SDL_Rect shot = {x + 37,y,5, 20};
+    int count = 0;
+    int num = 0;
+        for(int i = 0; i<bullets; i++){
+            shots[i].h = 20;
+            shots[i].w = 5;
+            shots[i].x = x + 37;
+            shots[i].y = y;
+        }
+
     while(!quit){
+        bool t = false;
 
         while(SDL_PollEvent(&event)){
             if(event.type == SDL_QUIT){
@@ -57,6 +70,8 @@ int main(){
                         break;
                     case SDLK_UP:
                         t= true;
+                        count ++;
+                        num++;
                         break;
                     default:
                         break;
@@ -67,14 +82,32 @@ int main(){
         SDL_SetRenderDrawColor(renderer, 0,0,0, 255);
         SDL_RenderClear(renderer);
 
+        for(int i = 0; i< bullets; i++){
+            if((shots[i].y < y) && (shots[i].y > -20)){
+                shots[i].y -= shotspeed;
+                printf("shots at [%d] moved up\n", i);
+            }
+        }
+
         if(t){
-            shot.y -= shotspeed;
+            shots[count-1].y -= shotspeed+20;
         }else{
-            shot.x = x +37;
+            for(int i = count; i< bullets; i++){
+                shots[i].x = x +37;
+            }
+        }
+
+        for(int i = 0; i< bullets; i++){
+            if(shots[i].y <= -20){
+                shots[i].y = y;
+                num --;
+            }
         }
 
         SDL_SetRenderDrawColor(renderer, 255,0,0, 255);
-        SDL_RenderFillRect(renderer, &shot);
+        for(int i = 0; i< bullets; i++){
+            SDL_RenderFillRect(renderer, &shots[i]);
+        }
         SDL_SetRenderDrawColor(renderer, 0,0,255, 255);
         createcharacter(renderer, 0, 0, 255, x, HEIGHT - 20);
 
