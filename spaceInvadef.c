@@ -33,9 +33,9 @@ void createcharacter(SDL_Renderer* renderer, int r, int g, int b, int x, int y){
     SDL_RenderFillRect(renderer, &gun);
 }
 
-void buildwall(SDL_Renderer* renderer,int r, int g, int b, int x, int y){
+void buildwall(SDL_Renderer* renderer,int r, int g, int b, int x, int y, int width){
     SDL_SetRenderDrawColor(renderer, r,g,b,255);
-    SDL_Rect boxbold = {x,y, 150, 50};
+    SDL_Rect boxbold = {x,y, width, 50};
     SDL_RenderFillRect(renderer, &boxbold);
 }
 
@@ -114,6 +114,9 @@ int main(){
     int heightAdd = 0;
     int trav = 0;
     int tray = 0;
+    int wide1 = 150;
+    int wide2 = 150;
+    int wide3 = 150;
 
         for(int i = 0; i<bullets; i++){
             shots[i].h = 20;
@@ -185,6 +188,31 @@ int main(){
                 }
             }
 
+            if(shots[i].y <= 450 && (shots[i].x >= 75 && shots[i].x <= 75+ wide1)){
+                shots[i].y = y;
+                shots[i].x = x;
+                num --;
+                if(wide1>=0)
+                wide1 -= 25;
+            }
+
+            if(shots[i].y <= 450 && (shots[i].x >= 330 && shots[i].x <= 330+ wide2)){
+                shots[i].y = y;
+                shots[i].x = x;
+                num --;
+                if(wide2>=0)
+                wide2 -= 25;
+            }
+
+            if(shots[i].y <= 450 && (shots[i].x >= 600 && shots[i].x <= 600+ wide3)){
+                shots[i].y = y;
+                shots[i].x = x;
+                num --;
+                if(wide3>=0)
+                wide3 -= 25;
+            }
+
+
             if(shots[i].y <= -20){
                 shots[i].y = y;
                 shots[i].x = x;
@@ -199,15 +227,16 @@ int main(){
         }
         SDL_SetRenderDrawColor(renderer, 0,0,255, 255);
         createcharacter(renderer, 0, 0, 255, x, HEIGHT - 20);
-        buildwall(renderer, 0,0,255,75, 450);
-        buildwall(renderer, 0,0,255,330, 450);
-        buildwall(renderer, 0,0,255,600, 450);
+
+        buildwall(renderer, 0,0,255,75, 450, wide1);
+        buildwall(renderer, 0,0,255,330, 450, wide2);
+        buildwall(renderer, 0,0,255,600, 450, wide3);
 
         printCrab(renderer, crabs, 0);
 
-        if(trav == 60){
+        if(trav == 100){
             intAdder *= -1;
-            trav = -30;
+            trav = -50;
             tray++;
         }
 
