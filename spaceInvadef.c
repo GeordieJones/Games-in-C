@@ -117,6 +117,13 @@ int main(){
     int wide1 = 150;
     int wide2 = 150;
     int wide3 = 150;
+    int trace = 0;
+
+    SDL_Rect crabShot;
+        crabShot.x = -40;
+        crabShot.y = -40;
+        crabShot.w = 5;
+        crabShot.h = 20;
 
         for(int i = 0; i<bullets; i++){
             shots[i].h = 20;
@@ -127,6 +134,8 @@ int main(){
 
     while(!quit){
         bool t = false;
+        int randhigh = ((rand() % crabrow));
+        int randlev = ((rand() % 3));
 
         while(SDL_PollEvent(&event)){
             if(event.type == SDL_QUIT){
@@ -157,6 +166,22 @@ int main(){
         }
         SDL_SetRenderDrawColor(renderer, 0,0,0, 255);
         SDL_RenderClear(renderer);
+
+
+        
+        if(crabShot.y >= HEIGHT){
+            crabShot.y = -40;
+            printf("Height reset to  %d, %d\n",crabShot.x, crabShot.y);
+        }
+        if(crabShot.y != -40){
+            crabShot.y += 5;
+        }
+
+        if(trace %200 == 10){
+            crabShot.y = crabs[randhigh][randlev].y;
+            crabShot.x = crabs[randhigh][randlev].x;
+        }
+        trace ++;
 
         for(int i = 0; i< bullets; i++){
             if((shots[i].y < y) && (shots[i].y > -20)){
@@ -225,6 +250,7 @@ int main(){
         for(int i = 0; i< bullets; i++){
             SDL_RenderFillRect(renderer, &shots[i]);
         }
+        SDL_RenderFillRect(renderer, &crabShot);
         SDL_SetRenderDrawColor(renderer, 0,0,255, 255);
         createcharacter(renderer, 0, 0, 255, x, HEIGHT - 20);
 
