@@ -1,3 +1,15 @@
+/*
+notes: you need to have downloaded brew SDL2/SDL and then SDL2/SDL_ttf.h the ttf.h is for the numbers that
+keep track of the score
+
+Compile:
+clang -o spaceInvadef spaceInvadef.c -I/opt/homebrew/include -L/opt/homebrew/lib -lSDL2 -lSDL2_ttf
+
+Run:
+./spaceInvadef
+
+*/
+
 #include <SDL2/SDL.h>
 #include <stdio.h>
 #include <stdbool.h>
