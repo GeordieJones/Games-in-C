@@ -12,6 +12,7 @@
 #define crabrow WIDTH / 80
 
 SDL_Rect shots [bullets];
+SDL_Rect crabshots [bullets];
 
 
 struct crab{
@@ -131,6 +132,12 @@ int main(){
             shots[i].x = x + 37;
             shots[i].y = y;
         }
+        for(int i = 0; i<bullets; i++){
+            crabshots[i].h = 20;
+            crabshots[i].w = 5;
+            crabshots[i].x = -40;
+            crabshots[i].y = -40;
+        }
 
     while(!quit){
         bool t = false;
@@ -168,16 +175,29 @@ int main(){
         SDL_RenderClear(renderer);
 
 
-        
-        if(crabShot.y >= HEIGHT){
+        if(crabShot.y == 430 && (crabShot.x >= 75 && crabShot.x <= 75 + wide1)){
+            crabShot.y = -40;
+            if(wide1>=0)
+                wide1 -= 25;
+        }else if(crabShot.y == 430 && (crabShot.x >= 330 && crabShot.x <= 330 + wide2)){
+            crabShot.y = -40;
+            if(wide2>=0)
+                wide2 -= 25;
+        }else if(crabShot.y == 430 && (crabShot.x >= 600 && crabShot.x <= 600 + wide3)){
+            crabShot.y = -40;
+            if(wide3>=0)
+                wide3 -= 25;
+        }else if(crabShot.y >= HEIGHT){
             crabShot.y = -40;
             printf("Height reset to  %d, %d\n",crabShot.x, crabShot.y);
-        }
-        if(crabShot.y != -40){
+        }else if(crabShot.y == HEIGHT -40 && (crabShot.x >= x && crabShot.x <= 80 + x)){
+            crabShot.y = -40;
+            printf("Player shot\n");
+        }else if(crabShot.y != -40){
             crabShot.y += 5;
         }
 
-        if(trace %200 == 10){
+        if(trace %150 == 10){
             crabShot.y = crabs[randhigh][randlev].y;
             crabShot.x = crabs[randhigh][randlev].x;
         }
