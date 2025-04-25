@@ -2,6 +2,9 @@
 notes: you need to have downloaded brew SDL2/SDL and then SDL2/SDL_ttf.h the ttf.h is for the numbers that
 keep track of the score
 
+UP ARROW to shoot;
+left and right arrow to move;
+
 Compile:
 clang -o spaceInvadef spaceInvadef.c -I/opt/homebrew/include -L/opt/homebrew/lib -lSDL2 -lSDL2_ttf
 
@@ -119,7 +122,7 @@ int main(){
     SDL_Rect score1Rect = {(WIDTH / 4 - score1Surface->w / 2) +100, 200, score1Surface->w, score1Surface->h};
 
 
- 
+
     struct crab crabs [crabrow][3];
     for(int i = 0; i < 3; i++){
         for(int h = 0; h < crabrow; h++){
