@@ -119,6 +119,7 @@ int main(){
     int wide2 = 150;
     int wide3 = 150;
     int trace = 0;
+    int fired = 0;
 
     SDL_Rect crabShot;
         crabShot.x = -40;
@@ -174,32 +175,34 @@ int main(){
         SDL_SetRenderDrawColor(renderer, 0,0,0, 255);
         SDL_RenderClear(renderer);
 
-
-        if(crabShot.y == 430 && (crabShot.x >= 75 && crabShot.x <= 75 + wide1)){
-            crabShot.y = -40;
-            if(wide1>=0)
-                wide1 -= 25;
-        }else if(crabShot.y == 430 && (crabShot.x >= 330 && crabShot.x <= 330 + wide2)){
-            crabShot.y = -40;
-            if(wide2>=0)
-                wide2 -= 25;
-        }else if(crabShot.y == 430 && (crabShot.x >= 600 && crabShot.x <= 600 + wide3)){
-            crabShot.y = -40;
-            if(wide3>=0)
-                wide3 -= 25;
-        }else if(crabShot.y >= HEIGHT){
-            crabShot.y = -40;
-            printf("Height reset to  %d, %d\n",crabShot.x, crabShot.y);
-        }else if(crabShot.y == HEIGHT -40 && (crabShot.x >= x && crabShot.x <= 80 + x)){
-            crabShot.y = -40;
-            printf("Player shot\n");
-        }else if(crabShot.y != -40){
-            crabShot.y += 5;
+        for(int i = 0; i < bullets; i++){
+            if(crabshots[i].y == 430 && (crabshots[i].x >= 75 && crabshots[i].x <= 75 + wide1)){
+                crabshots[i].y = -40;
+                if(wide1>=0)
+                    wide1 -= 25;
+            }else if(crabshots[i].y == 430 && (crabshots[i].x >= 330 && crabshots[i].x <= 330 + wide2)){
+                crabshots[i].y = -40;
+                if(wide2>=0)
+                    wide2 -= 25;
+            }else if(crabshots[i].y == 430 && (crabshots[i].x >= 600 && crabshots[i].x <= 600 + wide3)){
+                crabshots[i].y = -40;
+                if(wide3>=0)
+                    wide3 -= 25;
+            }else if(crabshots[i].y >= HEIGHT){
+                crabshots[i].y = -40;
+                printf("Height reset to  %d, %d\n",crabshots[i].x, crabshots[i].y);
+            }else if(crabshots[i].y == HEIGHT -40 && (crabshots[i].x >= x && crabshots[i].x <= 80 + x)){
+                crabshots[i].y = -40;
+                printf("Player shot\n");
+            }else if(crabshots[i].y != -40){
+                crabshots[i].y += 5;
+            }
         }
 
-        if(trace %150 == 10){
-            crabShot.y = crabs[randhigh][randlev].y;
-            crabShot.x = crabs[randhigh][randlev].x;
+        if(trace %50 == 10){
+            crabshots[fired % bullets].y = crabs[randhigh][randlev].y;
+            crabshots[fired % bullets].x = crabs[randhigh][randlev].x;
+            fired++;
         }
         trace ++;
 
@@ -270,7 +273,9 @@ int main(){
         for(int i = 0; i< bullets; i++){
             SDL_RenderFillRect(renderer, &shots[i]);
         }
-        SDL_RenderFillRect(renderer, &crabShot);
+        for(int i = 0; i< bullets; i++){
+            SDL_RenderFillRect(renderer, &crabshots[i]);
+        }
         SDL_SetRenderDrawColor(renderer, 0,0,255, 255);
         createcharacter(renderer, 0, 0, 255, x, HEIGHT - 20);
 
