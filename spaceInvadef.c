@@ -194,6 +194,44 @@ int main(){
             }else if(crabshots[i].y == HEIGHT -40 && (crabshots[i].x >= x && crabshots[i].x <= 80 + x)){
                 crabshots[i].y = -40;
                 printf("Player shot\n");
+                for(int i = 0; i < 3; i++){
+                    for(int h = 0; h < crabrow; h++){
+                        crabs[h][i].x = h*80;
+                        crabs[h][i].y = (i * 60)+40;
+                        crabs[h][i].width = 60;
+                        crabs[h][i].height = 40;
+                        crabs[h][i].alive = 1;
+                    }
+                }
+                int x = WIDTH /2;
+                int y = HEIGHT - 20;
+                int playerspeed = 20;
+                int shotspeed = 10;
+                int count = 0;
+                int num = 0;
+                int intAdder= 2;
+                int heightAdd = 0;
+                int trav = 0;
+                int tray = 0;
+                int wide1 = 150;
+                int wide2 = 150;
+                int wide3 = 150;
+                int trace = 0;
+                int fired = 0;
+                for(int i = 0; i<bullets; i++){
+                    shots[i].h = 20;
+                    shots[i].w = 5;
+                    shots[i].x = x + 37;
+                    shots[i].y = y;
+                }
+                for(int i = 0; i<bullets; i++){
+                    crabshots[i].h = 20;
+                    crabshots[i].w = 5;
+                    crabshots[i].x = -40;
+                    crabshots[i].y = -40;
+                }
+
+
             }else if(crabshots[i].y != -40){
                 crabshots[i].y += 5;
             }
