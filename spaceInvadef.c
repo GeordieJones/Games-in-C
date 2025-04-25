@@ -107,7 +107,7 @@ int main(){
     SDL_Rect score1Rect = {(WIDTH / 4 - score1Surface->w / 2) +100, 200, score1Surface->w, score1Surface->h};
 
 
-
+ 
     struct crab crabs [crabrow][3];
     for(int i = 0; i < 3; i++){
         for(int h = 0; h < crabrow; h++){
@@ -205,7 +205,6 @@ int main(){
                     wide3 -= 25;
             }else if(crabshots[i].y >= HEIGHT){
                 crabshots[i].y = -40;
-                printf("Height reset to  %d, %d\n",crabshots[i].x, crabshots[i].y);
             }else if(crabshots[i].y == HEIGHT -40 && (crabshots[i].x >= x && crabshots[i].x <= 80 + x)){
                 crabshots[i].y = -40;
                 printf("Player shot\n");
@@ -251,11 +250,24 @@ int main(){
                 crabshots[i].y += 5;
             }
         }
-
         if(trace %50 == 10){
-            crabshots[fired % bullets].y = crabs[randhigh][randlev].y;
-            crabshots[fired % bullets].x = crabs[randhigh][randlev].x;
-            fired++;
+            bool test = true;
+            int count = 0;
+            while(test){
+                int randhigh = rand() % crabrow;
+                int randlev = rand() % 3;
+                if(crabs[randhigh][randlev].alive == 1){
+                    crabshots[fired % bullets].y = crabs[randhigh][randlev].y;
+                    crabshots[fired % bullets].x = crabs[randhigh][randlev].x;
+                    fired++;
+                    test = false;
+                }else if(count == 800){
+                    test = false;
+                    printf("ERROR CHANGING TO WORKING CRAB");
+                }else{
+                    count++;
+                }
+            }
         }
         trace ++;
 
