@@ -83,6 +83,7 @@ void printCrab(SDL_Renderer* renderer, struct crab crabs [crabrow][3], int x){
 
 int main(){
     SDL_Init(SDL_INIT_VIDEO);
+    TTF_Init();
     SDL_Window* window = SDL_CreateWindow("Space Invader", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, SDL_WINDOW_SHOWN);
     SDL_RaiseWindow(window);
 
@@ -93,6 +94,20 @@ int main(){
         SDL_Quit();
         return 1;
     }
+    TTF_Font* font = TTF_OpenFont("OpenSans-Regular.ttf", 48); // Make sure the TTF file is in your project directory
+    if (!font) {
+        printf("Failed to load font: %s\n", TTF_GetError());
+        return 1;
+    }
+    SDL_Color color = {255, 255, 255};
+    char score1Text[32];
+    sprintf(score1Text, "PLAYER SHOT: GAME RESET");
+    SDL_Surface* score1Surface = TTF_RenderText_Solid(font, score1Text, color);
+    SDL_Texture* score1Texture = SDL_CreateTextureFromSurface(renderer, score1Surface);
+    SDL_Rect score1Rect = {(WIDTH / 4 - score1Surface->w / 2) +100, 200, score1Surface->w, score1Surface->h};
+
+
+
     struct crab crabs [crabrow][3];
     for(int i = 0; i < 3; i++){
         for(int h = 0; h < crabrow; h++){
