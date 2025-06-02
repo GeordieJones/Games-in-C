@@ -1,4 +1,4 @@
-# Snake-in-C
+# Games-in_C
 
 **About:** This is a project group of games I made in C using the SDL library in order to play these games you must first install SDL2/SDL via homebrew. These games are classic old games so the controls should be self explainitory and either use the arrow keys or the S and W for the pong game. Enjoy.
 
